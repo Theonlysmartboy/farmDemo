@@ -23,16 +23,18 @@ class Details {
   function __destruct() {
   }
   public function storeDetails($fname,	$ppn, $spn,	$email, $idno,	$bt, $loc, $mrev){
-    $stmt = $this->conn->prepare("INSERT INTO user_details(fname, ppn,	spn, email, idno, bt, loc, mrev, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, 1");
+    $stmt = $this->conn->prepare("INSERT INTO user_details(fname, ppn,	spn, email, idno, bt, loc, mrev, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?, 1)");
     /* checking whether the prepare() succeeded */
     if ($stmt === false) {
+        echo $this->conn->error;
         return false;
     }
-    $stmt->bind_param("sssssssss", $fname,	$ppn, $spn,	$email, $idno,	$bt, $loc, $mrev);
+    $stmt->bind_param("ssssssss", $fname,	$ppn, $spn,	$email, $idno,	$bt, $loc, $mrev);
     $result = $stmt->execute();
     $stmt->close();
     // check for successful store
     if ($result) {
+        echo $this->conn->error;
         $stmt = $this->conn->prepare("SELECT * FROM user_details WHERE email = ?");
         /* checking whether the prepare() succeeded */
         if ($stmt === false) {
@@ -62,8 +64,8 @@ class Details {
       return false;
   }
       //binding results to the query
-      $stmt->bind_result($id, $fname,	$ppn, $spn,	$email, $idno,	$bt, $loc, $mrev, $status);
-      $result = array();
+      $stmt->bind_result($id, $fname, $ppn, $spn, $email, $idno, $bt, $loc, $mrev, $created_at, $updated_at, $status);
+      $result['data'] = array();
         while($stmt->fetch()){
             // transaction details found
             $details["id"] = $id;
@@ -75,8 +77,10 @@ class Details {
             $details["businesstype"] = $bt;
             $details["location"] = $loc;
             $details["monthlyrevenue"] = $mrev;
+            $details["regdate"] = $created_at;
+            $details["updatedate"] = $updated_at;
             $details["status"] = $status;
-            array_push($result, $details);
+            array_push($result['data'], $details);
         }
       return json_encode($result);
       $stmt->close();

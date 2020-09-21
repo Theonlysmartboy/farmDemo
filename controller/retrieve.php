@@ -1,5 +1,5 @@
 <?php
-require_once '../../model/Details.php';
+require_once '../model/Details.php';
 $sale = new Details();
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
   $details = $sale->getDetails();

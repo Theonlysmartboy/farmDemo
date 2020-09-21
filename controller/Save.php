@@ -1,13 +1,14 @@
 <?php
 require_once '../model/Details.php';
-$sale = new Details();
+$details = new Details();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   // get the transaction details by account number
-
-  $details = $sale->saveDetails($_POST['fname'], $_POST['ppn'], $_POST['spn'],	$_POST['email'], $_POST['idno'], $_POST['bt'], $_POST['loc'], $_POST['mrev']);
-  if ($dSaleDetails != false) {
+  $request = $details->storeDetails($_POST['fname'], $_POST['ppn'], $_POST['spn'],	$_POST['email'], $_POST['idno'], $_POST['bt'], $_POST['loc'], $_POST['mrev']);
+  if ($request != false) {
       // transaction details found
-          echo $details;
+      $response["error"] = FALSE;
+      $response["error_msg"] = "Account creation successful!";
+      echo json_encode($response);
       } else {
           // transaction details not found for the account number
           $response["error"] = TRUE;
