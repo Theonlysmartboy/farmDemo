@@ -1,5 +1,5 @@
 <?php
-require_once '../../model/Details.php';
+require_once '../model/Details.php';
 $sale = new Details();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   // get the transaction details by account number
@@ -14,4 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           $response["error_msg"] = "No sales Done yet!";
           echo json_encode($response);
       }
+}else{
+    $response["error"] = TRUE;
+          $response["error_msg"] = "Invalid request!";
+          echo json_encode($response);
 }

@@ -15,7 +15,7 @@ class Details {
   public $conn;
   // constructor
   function __construct() {
-      require_once '../../App/Connect.php';
+      require_once '../app/Connect.php';
       $db = new Db_Connect();
       $this->conn = $db->connect();
   }

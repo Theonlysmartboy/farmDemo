@@ -10,4 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
           $response["error_msg"] = "No data in db!";
           echo json_encode($response);
       }
+}else{
+    $response["error"] = TRUE;
+          $response["error_msg"] = "Invalid request!";
+          echo json_encode($response);
 }
